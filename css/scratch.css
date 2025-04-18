@@ -1,0 +1,148 @@
+/* Base layout */
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background-color: #f7eed4;
+    color: #222;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  /* Header */
+  h1 {
+    color: #d32f2f;
+    font-size: 2.5rem;
+    margin-top: 30px;
+    border-bottom: 3px solid #d32f2f;
+    padding-bottom: 10px;
+  }
+  
+  /* Subheaders */
+  h2 {
+    font-size: 1.8rem;
+    color: #444;
+    margin-top: 30px;
+  }
+  
+  /* Nav links */
+  a[href$=".html"] {
+    margin: 10px 15px;
+    color: #000000;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1rem;
+  }
+  
+  a[href$=".html"]:hover {
+    text-decoration: underline;
+    color: #9a0007;
+  }
+  
+  /* Lists */
+  ol.centered-list {
+    list-style-position: inside;
+    text-align: left;
+    max-width: 600px;
+    font-size: 1rem;
+    padding: 0 20px;
+  }
+  
+  ol.centered-list li {
+    margin-bottom: 10px;
+  }
+  
+  ol.centered-list ul {
+    margin-top: 5px;
+    padding-left: 20px;
+  }
+  
+  /* Image styling */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin: 20px 0;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* YouTube video styling */
+  iframe {
+    max-width: 100%;
+    height: 100%;
+    border: 2px solid #ccc;
+    border-radius: 20px;
+    margin: 50px 0;
+  }
+  
+  /* Footer link */
+  a[href="#top"] {
+    display: inline-block;
+    margin: 40px 0;
+    font-size: 1rem;
+    color: #555;
+  }
+  
+  a[href="#top"]:hover {
+    color: #d32f2f;
+  }
+  
+  /* Responsive enhancements */
+  @media (max-width: 600px) {
+    h1 {
+      font-size: 2rem;
+    }
+  
+    h2 {
+      font-size: 1.5rem;
+    }
+  
+    ol.centered-list {
+      font-size: 0.95rem;
+    }
+  
+    a[href$=".html"], a[href="#top"] {
+      font-size: 0.9rem;
+    }
+  
+    iframe {
+      width: 100%;
+      height: auto;
+    }
+  }
+  /* Nav buttons container */
+.nav-buttons {
+    margin: 20px 0;
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  /* Nav button styling */
+  .nav-btn {
+    padding: 10px 20px;
+    background-color: #d32f2f;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+  }
+  
+  .nav-btn:hover {
+    background-color: #9a0007;
+  }
+ /* Tableau Viz Styling */
+iframe.tableau-viz {
+    width: 100%;
+    max-width: 300px;
+    height: 300px;
+    border: 4px solid #d32f2f;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    margin: 30px 0;
+  }
+   

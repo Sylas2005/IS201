@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tic-Tac-Toe: Multiplayer or AI</title>
+  <style>
+    body {
+      font-family: 'Helvetica Neue', sans-serif;
+      background-color: #f4f4f4;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 0;
+      padding: 50px 0;
+    }
+
+    h1 {
+      color: #d32f2f;
+      margin-bottom: 10px;
+    }
+
+    .mode-select {
+      margin-bottom: 20px;
+    }
+
+    .board {
+      display: grid;
+      grid-template-columns: repeat(3, 100px);
+      grid-template-rows: repeat(3, 100px);
+      gap: 5px;
+    }
+
+    .cell {
+      background-color: white;
+      border: 2px solid #ccc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      cursor: pointer;
+      user-select: none;
+      transition: background-color 0.3s;
+    }
+
+    .cell:hover {
+      background-color: #f9e0e0;
+    }
+
+    .cell.winner {
+      background-color: #c8e6c9;
+    }
+
+    #status {
+      font-size: 1.2rem;
+      margin: 20px 0;
+    }
+
+    .scores {
+      font-size: 1rem;
+      margin-bottom: 10px;
+    }
+
+    .scores span {
+      font-weight: bold;
+      margin: 0 10px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      background-color: #d32f2f;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin: 10px;
+    }
+
+    button:hover {
+      background-color: #9a0007;
+    }
+  </style>
+</head>
+<body>
+  <h1>Tic-Tac-Toe</h1>
+
+  <div class="mode-select">
+    <label>
+      <input type="radio" name="mode" value="ai" checked> Single Player (vs AI)
+    </label>
+    <label>
+      <input type="radio" name="mode" value="2p"> Two Players
+    </label>
+  </div>
+
+  <div class="scores">
+    Score — <span>X:</span> <span id="scoreX">0</span> | <span>O:</span> <span id="scoreO">0</span>
+  </div>
+
+  <div class="board" id="board"></div>
+  <div id="status">Player X's turn</div>
+  <button onclick="resetGame()">Restart Game</button>
+
+  <script>
+    const boardEl = document.getElementById('board');
+    const statusEl = document.getElementById('status');
+    const scoreXEl = document.getElementById('scoreX');
+    const scoreOEl = document.getElementById('scoreO');
+    const modeRadios = document.querySelectorAll('input[name="mode"]');
+
+    let board = Array(9).fill('');
+    let currentPlayer = 'X';
+    let gameActive = true;
+    let scores = { X: 0, O: 0 };
+    let gameMode = 'ai'; // default mode
+
+    const winPatterns = [
+      [0,1,2], [3,4,5], [6,7,8],
+      [0,3,6], [1,4,7], [2,5,8],
+      [0,4,8], [2,4,6]
+    ];
+
+    modeRadios.forEach(radio => {
+      radio.addEventListener('change', () => {
+        gameMode = document.querySelector('input[name="mode"]:checked').value;
+        resetGame();
+      });
+    });
+
+    function checkWin() {
+      for (let pattern of winPatterns) {
+        const [a, b, c] = pattern;
+        if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+          gameActive = false;
+          statusEl.textContent = `Player ${board[a]} wins!`;
+          document.querySelectorAll('.cell').forEach((cell, i) => {
+            if (pattern.includes(i)) cell.classList.add('winner');
+          });
+          scores[board[a]]++;
+          updateScores();
+          setTimeout(() => {
+            alert(`🎉 Player ${board[a]} wins!`);
+          }, 100);
+          return true;
+        }
+      }
+
+      if (!board.includes('')) {
+        gameActive = false;
+        statusEl.textContent = "It's a draw!";
+        setTimeout(() => {
+          alert("🤝 It's a draw!");
+        }, 100);
+        return true;
+      }
+
+      return false;
+    }
+
+    function aiMove() {
+      if (!gameActive) return;
+      const emptyCells = board.map((v, i) => v === '' ? i : null).filter(i => i !== null);
+      if (emptyCells.length === 0) return;
+      const move = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+      board[move] = 'O';
+      render();
+      if (!checkWin()) {
+        currentPlayer = 'X';
+        statusEl.textContent = `Player ${currentPlayer}'s turn`;
+      }
+    }
+
+    function handleClick(index) {
+      if (!gameActive || board[index]) return;
+      board[index] = currentPlayer;
+      render();
+      if (!checkWin()) {
+        if (gameMode === 'ai') {
+          currentPlayer = 'O';
+          statusEl.textContent = "AI is thinking...";
+          setTimeout(() => {
+            aiMove();
+          }, 500);
+        } else {
+          currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+          statusEl.textContent = `Player ${currentPlayer}'s turn`;
+        }
+      }
+    }
+
+    function render() {
+      boardEl.innerHTML = '';
+      board.forEach((mark, i) => {
+        const cell = document.createElement('div');
+        cell.className = 'cell';
+        cell.textContent = mark;
+        cell.onclick = () => handleClick(i);
+        boardEl.appendChild(cell);
+      });
+    }
+
+    function resetGame() {
+      board = Array(9).fill('');
+      currentPlayer = 'X';
+      gameActive = true;
+      statusEl.textContent = "Player X's turn";
+      render();
+    }
+
+    function updateScores() {
+      scoreXEl.textContent = scores.X;
+      scoreOEl.textContent = scores.O;
+    }
+
+    render();
+  </script>
+</body>
+</html>
